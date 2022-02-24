@@ -46,3 +46,16 @@ echo \
 
 greeting('World')" > src/index.ts
 ```
+
+
+```shell
+echo \
+"name: 'Consonant vowel ratio'
+author: 'Chris Trzesniewski'
+description: 'Consonant to vowel ratio GitHub action'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+" > action.yml
+```

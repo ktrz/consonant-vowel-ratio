@@ -1,0 +1,8 @@
+name: 'Consonant vowel ratio'
+author: 'Chris Trzesniewski'
+description: 'Consonant to vowel ratio GitHub action'
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
+
