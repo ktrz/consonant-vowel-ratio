@@ -1,10 +1,15 @@
 import { getInput } from '@actions/core'
 import { context } from '@actions/github'
+import { GithubContext } from './types';
 
-function greeting(name: string, repo: string) {
-  console.log(`Hello ${name}! You are running a GitHub action in ${repo}`)
+function greeting(name: string, repoUrl: string) {
+  console.log(`Hello ${name}! You are running a GitHub action in ${repoUrl}`)
 }
 
 const inputName = getInput('name')
 
-greeting(inputName, context.repo.repo)
+const getRepoUrl = ({ repo, serverUrl }: GithubContext): string => {
+  return `${serverUrl}/${repo.owner}/${repo.repo}`
+}
+
+greeting(inputName, getRepoUrl(context))
