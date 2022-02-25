@@ -108,10 +108,6 @@ const getPreviousComment = async () => {
       pull_number: pullRequest.number,
     });
 
-    console.log('--- Previous reviews ---');
-    console.log(JSON.stringify(result.data), undefined, 2);
-    console.log('------------------------');
-
     return result.data.filter(({ body }) => body.trim().startsWith('# Consonant Vowel Ratio'));
   }
 };
