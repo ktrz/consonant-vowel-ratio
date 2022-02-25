@@ -64,7 +64,6 @@ const comparePullRequest = async () => {
         );
     }
   }
-
   return null;
 };
 
@@ -75,7 +74,6 @@ const postComment = async (comment: string) => {
     const octokit = getOctokit(token);
 
     const previousComments = await getPreviousComment();
-
     if (previousComments && previousComments.length) {
       await octokit.rest.pulls.updateReview({
         review_id: previousComments[previousComments.length - 1].id,
