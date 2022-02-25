@@ -72,16 +72,38 @@ const postComment = async (comment: string) => {
   const token: string = getInput('ghToken');
   const pullRequest = context.payload.pull_request;
   if (token && pullRequest) {
+    // const octokit = getOctokit(token);
+
+    await getPreviousComment()
+    // await octokit.rest.pulls.createReview({
+    //   event: 'COMMENT',
+    //   owner: context.repo.owner,
+    //   repo: context.repo.repo,
+    //   pull_number: pullRequest.number,
+    //   body: comment,
+    // });
+  }
+};
+
+const getPreviousComment = async () => {
+  const token: string = getInput('ghToken');
+  const pullRequest = context.payload.pull_request;
+  if (token && pullRequest) {
     const octokit = getOctokit(token);
-    await octokit.rest.pulls.createReview({
-      event: 'COMMENT',
+
+    const result = await octokit.rest.pulls.listReviews({
       owner: context.repo.owner,
       repo: context.repo.repo,
       pull_number: pullRequest.number,
-      body: comment,
-    });
+    })
+
+    console.log('--- Previous reviews ---')
+    console.log(JSON.stringify(result.data), undefined, 2)
+    console.log('------------------------')
+
+    return result.data
   }
-};
+}
 
 comparePullRequest().then(async (data) => {
   if (data) {
