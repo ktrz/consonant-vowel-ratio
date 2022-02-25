@@ -2,6 +2,9 @@ import { getInput } from '@actions/core';
 import { context } from '@actions/github';
 import { GithubContext } from './types';
 import { GitHub } from '@actions/github/lib/utils';
+import { builders } from 'prettier/doc';
+import dedent = builders.dedent;
+
 
 function greeting(name: string, repoUrl: string) {
   console.log(`Hello ${name}! You are running a GitHub action in ${repoUrl}`);
@@ -93,12 +96,12 @@ const comparePullRequest = async () => {
 comparePullRequest().then((data) => {
   if (data) {
     const { vowelsCount, consonantCount } = data;
-    console.log(`
+    console.log(dedent(`
       Your PR added:
         ${consonantCount} consonants
         ${vowelsCount} vowels
         
-      The consonants to vowels ration is: ${(consonantCount / vowelsCount).toFixed(3)}
-`);
+      The consonants to vowels ratio is: ${(consonantCount / vowelsCount).toFixed(3)}
+`));
   }
 });
