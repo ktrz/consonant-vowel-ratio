@@ -90,4 +90,15 @@ const comparePullRequest = async () => {
   return null;
 };
 
-comparePullRequest().then(console.log.bind(console, 'count:'));
+comparePullRequest().then((data) => {
+  if (data) {
+    const { vowelsCount, consonantCount } = data;
+    console.log(`
+      Your PR added:
+        ${consonantCount} consonants
+        ${vowelsCount} vowels
+        
+      The consonants to vowels ration is: ${(consonantCount / vowelsCount).toFixed(3)}
+`);
+  }
+});
