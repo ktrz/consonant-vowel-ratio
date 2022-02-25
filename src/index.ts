@@ -73,8 +73,17 @@ const postComment = async (comment: string) => {
   if (token && pullRequest) {
     const octokit = getOctokit(token);
 
-    const previousComments = await getPreviousComment() || [];
-    previousComments.sort((a, b) => new Date(a.submitted_at!) < new Date(b.submitted_at!) ? 1 : -1)
+    const previousComments = (await getPreviousComment()) || [];
+    previousComments.sort((a, b) => (new Date(a.submitted_at!) < new Date(b.submitted_at!) ? 1 : -1));
+
+    // some gibberish
+    // sdfghlwsgfd
+    // sdfghlwsgfd
+    // sdfghlwsgfd
+    // sdfghlwsgfd
+    // sdfghlwsgfd
+    // sdfghlwsgfd
+
     if (previousComments.length) {
       await octokit.rest.pulls.updateReview({
         review_id: previousComments[0].id,
