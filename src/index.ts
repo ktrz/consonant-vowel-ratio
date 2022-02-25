@@ -70,16 +70,31 @@ const comparePullRequest = async () => {
 
 const postComment = async (comment: string) => {
   const token: string = getInput('ghToken');
-  if (token && context.payload.pull_request) {
+  const pullRequest = context.payload.pull_request;
+  if (token && pullRequest) {
     const octokit = getOctokit(token);
 
-    await octokit.rest.pulls.deletePendingReview()
+    const reviews = await octokit.rest.pulls.listReviews({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pull_number: pullRequest.number,
+    })
+
+    await Promise.allSettled(reviews.data.map(async ({ id }) => {
+      await octokit.rest.pulls.deletePendingReview({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        pull_number: pullRequest.number,
+        review_id: id
+      })
+    }))
+
 
     await octokit.rest.pulls.createReview({
       event: 'COMMENT',
       owner: context.repo.owner,
       repo: context.repo.repo,
-      pull_number: context.payload.pull_request.number,
+      pull_number: pullRequest.number,
       body: comment,
     });
   }
