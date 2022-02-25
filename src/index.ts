@@ -34,6 +34,9 @@ console.log('--- Payload ---');
 console.log(JSON.stringify(context.payload, undefined, 2));
 console.log('---------------');
 
+const CONSONANTS = /[bcdfghjklmnpqrstvwxz]/;
+const VOWELS = /[aeiouy]/;
+
 const comparePullRequest = async () => {
   const token: string = getInput('ghToken');
   if (token) {
@@ -49,11 +52,36 @@ const comparePullRequest = async () => {
         per_page: 100,
       });
 
-      (result.data.files || []).forEach((file) => {
-        console.log(JSON.stringify(file), undefined, 2);
-      });
+      return (result.data.files || [])
+        .map(({ patch }) => patch)
+        .filter((patch): patch is string => !!patch)
+        .map((patch) => {
+          return patch
+            .split('\\n')
+            .filter((line) => line.startsWith('+'))
+            .map((addedLine) => ({
+              vowelsCount: addedLine.split('').filter((char) => VOWELS.test(char)).length,
+              consonantCount: addedLine.split('').filter((char) => CONSONANTS.test(char)).length,
+            }));
+
+          // console.log(JSON.stringify(file), undefined, 2);
+        })
+        .flat()
+        .reduce(
+          (acc, { vowelsCount, consonantCount }) => {
+            acc.vowelsCount += vowelsCount;
+            acc.consonantCount += consonantCount;
+            return acc;
+          },
+          {
+            vowelsCount: 0,
+            consonantCount: 0,
+          },
+        );
     }
   }
+
+  return null;
 };
 
-comparePullRequest();
+comparePullRequest().then(console.log.bind(console, 'count:'));
