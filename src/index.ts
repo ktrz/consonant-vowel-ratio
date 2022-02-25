@@ -74,6 +74,7 @@ const postComment = async (comment: string) => {
     const octokit = getOctokit(token);
 
     await octokit.rest.pulls.createReview({
+      event: 'COMMENT',
       owner: context.repo.owner,
       repo: context.repo.repo,
       pull_number: context.payload.pull_request.number,
