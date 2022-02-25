@@ -73,23 +73,6 @@ const postComment = async (comment: string) => {
   const pullRequest = context.payload.pull_request;
   if (token && pullRequest) {
     const octokit = getOctokit(token);
-
-    // const reviews = await octokit.rest.pulls.listReviews({
-    //   owner: context.repo.owner,
-    //   repo: context.repo.repo,
-    //   pull_number: pullRequest.number,
-    // })
-    //
-    // await Promise.allSettled(reviews.data.map(async ({ id }) => {
-    //   await octokit.rest.pulls.deletePendingReview({
-    //     owner: context.repo.owner,
-    //     repo: context.repo.repo,
-    //     pull_number: pullRequest.number,
-    //     review_id: id
-    //   })
-    // }))
-
-
     await octokit.rest.pulls.createReview({
       event: 'COMMENT',
       owner: context.repo.owner,
