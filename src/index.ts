@@ -16,22 +16,22 @@ const getRepoUrl = ({ repo, serverUrl }: GithubContext): string => {
 greeting(inputName, getRepoUrl(context));
 
 console.log('--- Action Info ---');
-console.log('eventName:', context.eventName);
-console.log('sha:', context.sha);
-console.log('ref:', context.ref);
-console.log('workflow:', context.workflow);
-console.log('action:', context.action);
-console.log('actor:', context.actor);
-console.log('job:', context.job);
-console.log('runNumber:', context.runNumber);
-console.log('runId:', context.runId);
-console.log('apiUrl:', context.apiUrl);
-console.log('serverUrl:', context.serverUrl);
-console.log('graphqlUrl:', context.graphqlUrl);
+// console.log('eventName:', context.eventName);
+// console.log('sha:', context.sha);
+// console.log('ref:', context.ref);
+// console.log('workflow:', context.workflow);
+// console.log('action:', context.action);
+// console.log('actor:', context.actor);
+// console.log('job:', context.job);
+// console.log('runNumber:', context.runNumber);
+// console.log('runId:', context.runId);
+// console.log('apiUrl:', context.apiUrl);
+// console.log('serverUrl:', context.serverUrl);
+// console.log('graphqlUrl:', context.graphqlUrl);
 console.log('-------------------');
 
 console.log('--- Payload ---');
-console.log(JSON.stringify(context.payload, undefined, 2));
+// console.log(JSON.stringify(context.payload, undefined, 2));
 console.log('---------------');
 
 const CONSONANTS = /[bcdfghjklmnpqrstvwxz]/;
@@ -56,9 +56,9 @@ const comparePullRequest = async () => {
         .map(({ patch }) => patch)
         .filter((patch): patch is string => !!patch)
         .map((patch) => {
-          console.log('patch:', patch);
+          // console.log('patch:', patch);
           return patch
-            .split('\\n')
+            .split('\n')
             .filter((line) => line.startsWith('+'))
             .map((addedLine) => {
               console.log('added line:', addedLine);
