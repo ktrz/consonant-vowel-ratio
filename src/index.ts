@@ -59,6 +59,10 @@ const comparePullRequest = async () => {
           return patch
             .split('\\n')
             .filter((line) => line.startsWith('+'))
+              .map(addedLine => {
+                console.log('added line:', addedLine)
+                return addedLine
+              })
             .map((addedLine) => ({
               vowelsCount: addedLine.split('').filter((char) => VOWELS.test(char)).length,
               consonantCount: addedLine.split('').filter((char) => CONSONANTS.test(char)).length,
