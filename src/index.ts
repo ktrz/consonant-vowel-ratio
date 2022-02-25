@@ -116,14 +116,6 @@ const getPreviousComment = async () => {
   }
 };
 
-// some gibberish
-// some gibberish
-// some gibberish
-// some gibberish
-// some gibberish
-// some gibberish
-// some gibberish
-
 comparePullRequest().then(async (data) => {
   if (data) {
     const { vowelsCount, consonantCount } = data;
