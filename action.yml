@@ -6,6 +6,9 @@ inputs:
     description: 'Name to greet'
     required: false
     default: 'JS Marathon viewers'
+  ghToken:
+    description: 'GitHub access token'
+    required: false
 
 runs:
   using: 'node16'

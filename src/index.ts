@@ -35,19 +35,24 @@ console.log(JSON.stringify(context.payload, undefined, 2));
 console.log('---------------');
 
 const comparePullRequest = async () => {
-  const octokit = new GitHub();
-  if (context.payload.pull_request) {
-    const result = await octokit.rest.repos.compareCommits({
-      owner: context.repo.owner,
-      repo: context.repo.repo,
-      base: context.payload.pull_request.base.sha,
-      head: context.payload.pull_request.head.sha,
-      per_page: 100,
+  const token: string = getInput('ghToken');
+  if (token) {
+    const octokit = new GitHub({
+      auth: token,
     });
+    if (context.payload.pull_request) {
+      const result = await octokit.rest.repos.compareCommits({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        base: context.payload.pull_request.base.sha,
+        head: context.payload.pull_request.head.sha,
+        per_page: 100,
+      });
 
-    (result.data.files || []).forEach((file) => {
-      console.log(JSON.stringify(file), undefined, 2);
-    });
+      (result.data.files || []).forEach((file) => {
+        console.log(JSON.stringify(file), undefined, 2);
+      });
+    }
   }
 };
 
