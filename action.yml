@@ -1,6 +1,11 @@
 name: 'Consonant vowel ratio'
 author: 'Chris Trzesniewski'
 description: 'Consonant to vowel ratio GitHub action'
+inputs:
+  name:
+    description: 'Name to greet'
+    required: false
+    default: 'JS Marathon viewers'
 
 runs:
   using: 'node16'
