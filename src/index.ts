@@ -80,7 +80,6 @@ const postComment = async (comment: string) => {
       pull_number: pullRequest.number,
       body: comment,
     });
-
   }
 };
 
