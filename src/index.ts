@@ -64,7 +64,6 @@ const comparePullRequest = async () => {
         );
     }
   }
-
   return null;
 };
 
@@ -73,14 +72,43 @@ const postComment = async (comment: string) => {
   const pullRequest = context.payload.pull_request;
   if (token && pullRequest) {
     const octokit = getOctokit(token);
-    await octokit.rest.pulls.createReview({
-      event: 'COMMENT',
+
+    const previousComments = (await getPreviousComment()) || [];
+    previousComments.sort((a, b) => (new Date(a.submitted_at!) < new Date(b.submitted_at!) ? 1 : -1));
+
+    if (previousComments.length) {
+      await octokit.rest.pulls.updateReview({
+        review_id: previousComments[0].id,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        pull_number: pullRequest.number,
+        body: comment,
+      });
+    } else {
+      await octokit.rest.pulls.createReview({
+        event: 'COMMENT',
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        pull_number: pullRequest.number,
+        body: comment,
+      });
+    }
+  }
+};
+
+const getPreviousComment = async () => {
+  const token: string = getInput('ghToken');
+  const pullRequest = context.payload.pull_request;
+  if (token && pullRequest) {
+    const octokit = getOctokit(token);
+
+    const result = await octokit.rest.pulls.listReviews({
       owner: context.repo.owner,
       repo: context.repo.repo,
       pull_number: pullRequest.number,
-      body: comment,
     });
 
+    return result.data.filter(({ body }) => body.trim().startsWith('# Consonant Vowel Ratio'));
   }
 };
 
