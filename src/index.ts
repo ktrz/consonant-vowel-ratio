@@ -68,15 +68,35 @@ const comparePullRequest = async () => {
   return null;
 };
 
-comparePullRequest().then((data) => {
+const postComment = async (comment: string) => {
+  const token: string = getInput('ghToken');
+  const pullRequest = context.payload.pull_request;
+  if (token && pullRequest) {
+    const octokit = getOctokit(token);
+    await octokit.rest.pulls.createReview({
+      event: 'COMMENT',
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+      pull_number: pullRequest.number,
+      body: comment,
+    });
+
+  }
+};
+
+comparePullRequest().then(async (data) => {
   if (data) {
     const { vowelsCount, consonantCount } = data;
-    console.log(`
-      Your PR added:
-        ${consonantCount} consonants
-        ${vowelsCount} vowels
+    const comment = `
+# Consonant Vowel Ratio
+
+**Your PR added:**
+* ${consonantCount} consonants
+* ${vowelsCount} vowels
         
-      The consonants to vowels ratio is: ${(consonantCount / vowelsCount).toFixed(3)}
-`);
+**The consonants to vowels ratio is:** ${(consonantCount / vowelsCount).toFixed(3)}
+`;
+    console.log(comment);
+    await postComment(comment);
   }
 });
