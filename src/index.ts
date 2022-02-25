@@ -73,6 +73,8 @@ const postComment = async (comment: string) => {
   if (token && context.payload.pull_request) {
     const octokit = getOctokit(token);
 
+    await octokit.rest.pulls.deletePendingReview()
+
     await octokit.rest.pulls.createReview({
       event: 'COMMENT',
       owner: context.repo.owner,
