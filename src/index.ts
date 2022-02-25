@@ -13,3 +13,7 @@ const getRepoUrl = ({ repo, serverUrl }: GithubContext): string => {
 }
 
 greeting(inputName, getRepoUrl(context))
+
+console.log("--- Payload ---")
+console.log(JSON.stringify(context.payload))
+console.log("---------------")
