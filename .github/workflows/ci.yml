@@ -33,3 +33,5 @@ jobs:
 
       - name: Run action
         uses: ./
+        with:
+          ghToken: ${{ secrets.GITHUB_TOKEN }}

@@ -47,7 +47,6 @@ echo \
 greeting('World')" > src/index.ts
 ```
 
-
 ```shell
 echo \
 "name: 'Consonant vowel ratio'
@@ -59,7 +58,6 @@ runs:
   main: 'dist/index.js'
 " > action.yml
 ```
-
 
 ### Install GitHub actions packages
 
