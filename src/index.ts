@@ -16,22 +16,22 @@ const getRepoUrl = ({ repo, serverUrl }: GithubContext): string => {
 greeting(inputName, getRepoUrl(context));
 
 console.log('--- Action Info ---');
-// console.log('eventName:', context.eventName);
-// console.log('sha:', context.sha);
-// console.log('ref:', context.ref);
-// console.log('workflow:', context.workflow);
-// console.log('action:', context.action);
-// console.log('actor:', context.actor);
-// console.log('job:', context.job);
-// console.log('runNumber:', context.runNumber);
-// console.log('runId:', context.runId);
-// console.log('apiUrl:', context.apiUrl);
-// console.log('serverUrl:', context.serverUrl);
-// console.log('graphqlUrl:', context.graphqlUrl);
+console.log('eventName:', context.eventName);
+console.log('sha:', context.sha);
+console.log('ref:', context.ref);
+console.log('workflow:', context.workflow);
+console.log('action:', context.action);
+console.log('actor:', context.actor);
+console.log('job:', context.job);
+console.log('runNumber:', context.runNumber);
+console.log('runId:', context.runId);
+console.log('apiUrl:', context.apiUrl);
+console.log('serverUrl:', context.serverUrl);
+console.log('graphqlUrl:', context.graphqlUrl);
 console.log('-------------------');
 
 console.log('--- Payload ---');
-// console.log(JSON.stringify(context.payload, undefined, 2));
+console.log(JSON.stringify(context.payload, undefined, 2));
 console.log('---------------');
 
 const CONSONANTS = /[bcdfghjklmnpqrstvwxz]/;
@@ -53,10 +53,13 @@ const comparePullRequest = async () => {
       });
 
       return (result.data.files || [])
-        .map(({ patch }) => patch)
-        .filter((patch): patch is string => !!patch)
-        .map((patch) => {
-          // console.log('patch:', patch);
+        .map(({ patch, filename }) => ({
+          patch,
+          filename,
+        }))
+        .filter((data): data is { filename: string; patch: string } => !!data.patch)
+        .map(({ patch, filename }) => {
+          console.log('\n--- Filename ---:', filename);
           return patch
             .split('\n')
             .filter((line) => line.startsWith('+'))
@@ -68,8 +71,6 @@ const comparePullRequest = async () => {
               vowelsCount: addedLine.split('').filter((char) => VOWELS.test(char)).length,
               consonantCount: addedLine.split('').filter((char) => CONSONANTS.test(char)).length,
             }));
-
-          // console.log(JSON.stringify(file), undefined, 2);
         })
         .flat()
         .reduce(
