@@ -59,3 +59,10 @@ runs:
   main: 'dist/index.js'
 " > action.yml
 ```
+
+
+### Install GitHub actions packages
+
+```shell
+npm i @actions/core @actions/github
+```
