@@ -1,7 +1,6 @@
 import { getInput } from '@actions/core';
-import { context } from '@actions/github';
+import { context, getOctokit } from '@actions/github';
 import { GithubContext } from './types';
-import { GitHub } from '@actions/github/lib/utils';
 
 function greeting(name: string, repoUrl: string) {
   console.log(`Hello ${name}! You are running a GitHub action in ${repoUrl}`);
@@ -40,9 +39,7 @@ const VOWELS = /[aeiouy]/;
 const comparePullRequest = async () => {
   const token: string = getInput('ghToken');
   if (token) {
-    const octokit = new GitHub({
-      auth: token,
-    });
+    const octokit = getOctokit(token);
     if (context.payload.pull_request) {
       const result = await octokit.rest.repos.compareCommits({
         owner: context.repo.owner,
